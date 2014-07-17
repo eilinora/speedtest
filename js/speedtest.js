@@ -11,98 +11,59 @@ var names = '',
     dataSet = '',
     nameCheck = {};
 
-names = fs.readFileSync('js/names.txt', 'utf8');//.toString();
-dataSet = fs.readFileSync('js/data.txt', 'utf8');//.toString();
+names = fs.readFileSync('js/names.txt', 'utf8');
+dataSet = fs.readFileSync('js/data.txt', 'utf8');
 
-var split = function (needle, haystack) {
-  var i = 0, len = haystack.length, word = '', ar = [], chr = '';
-  for (i = 0; i < len; i++) {
-    chr = haystack[i];
-    // console.log(chr, needle);
-    if (chr === needle) {
-      ar.push(word);
-      word = '';
-    } else {
-      word += chr;
-    }
-  }
-  ar.push(word);
-  return ar;
-};
+// var split = function (needle, haystack) {
+//   var i = 0, len = haystack.length, word = '', ar = [], chr = '';
+//   for (i = 0; i < len; i++) {
+//     chr = haystack[i];
+//     if (chr === needle) {
+//       ar.push(word);
+//       word = '';
+//     } else {
+//       word += chr;
+//     }
+//   }
+//   ar.push(word);
+//   return ar;
+// };
 
 
 //sum func
-var dataloaded = function () {
-  var ar = names.split('\n'), //split ('\n', names), //
-      len = ar.length, n = '',
-      i = 0, sum = 0, num = '', len_num = 0,
-      p = 0, loc = -1, sub = '', name = '', j = 0,  k = 0, numNext = false;
-  // console.log(ar);
-  for (i = 0; i < len; i++) {
-    p = dataSet;
-    n = ar[i];
+var ar = names.split('\n'), //split ('\n', names), //
+    len = ar.length, n = '',
+    i = 0, sum = 0, num = '',
+    data = dataSet.split(' '), obj = [], s = null, dataLen = 0;
 
-    // console.log('NAME: ', n);
-    //double check
-    if (nameCheck[n] === undefined) {
-      nameCheck[n] = true;
-      name = n+',';
-      
-      loc = p.indexOf(name);
+data.shift();
+dataLen = data.length;
 
-      if (loc !== -1) {
-        num = 0;
-        //grab num
-        for (j = 0; j < 400; j++) { //do {
-          len_num = loc+20;
-          // sub = p.substring(loc, loc+20);
-          for (k = loc; k < len_num; k++) {
-            c = p.charAt(k);
-            if (c === ',') {
-              num = +p.charAt(k+1);
-              break;
-            }
-          }
+//build obj array
+for (i = 0; i < dataLen; i++) {
+  s = data[i].split(',');
+  d = s[1].split('\n');
 
-          // num = sub.substring(sub.indexOf(',')+1, sub.indexOf('\n'));
-          // console.log(p.substring(loc - 8, loc + 15));
-          // console.log('NUM: '+num);
-          sum += num;
-          // console.log(sum);
+  if (obj[s[0]] === undefined) {
+    obj[s[0]] = +d[0];
+  } else {
+    //sub common names
+    obj[s[0]] += +d[0];
+  }
+}
 
-          p = p.substring(k, p.length);
-
-          loc = p.indexOf(name);
-          if (loc === -1) {
-            // console.log(name, j);
-            break;
-          }
-          // console.log('----');
-        }// while (loc !== -1);
-
-        // console.log('----------------------------------------');
-      }
+//cycle through obj list
+for (i = 0; i < len; i++) {
+  n = ar[i];
+  if (nameCheck[n] === undefined) {
+    nameCheck[n] = true;
+    if (obj[n] !== undefined) {
+      sum += obj[n];
     }
   }
-  // console.log(i);
-  console.log(sum);
-  // console.log(sum - 178853);
+}
 
-};
+console.log(sum);
 
-dataloaded();
 
 })();
-
-
-
-  //   dataSet.indexOf(ar[i]);
-  //   // rex = new RegExp( ar[i] + ',(.*)', 'g');
-  //   // while ((result = rex.exec(dataSet)) !== null)
-  //   // {
-
-  //   //   sum += Number(result[1]);
-
-  //   //   // console.log(result[0], result[1], result['index'], ' ---- sum: ' + sum);
-  //   //   // console.log(ar[i] + ',(.*)', result);
-  //   // }
