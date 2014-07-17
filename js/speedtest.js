@@ -36,11 +36,11 @@ var ar = names.split('\n'), //split ('\n', names), //
     i = 0, sum = 0, num = '',
     data = dataSet.split(' '), obj = [], s = null, dataLen = 0;
 
-data.shift();
+// data.shift();
 dataLen = data.length;
 
 //build obj array
-for (i = 0; i < dataLen; i++) {
+for (i = 1; i < dataLen; i++) {
   s = data[i].split(',');
   d = s[1].split('\n');
 
